@@ -365,7 +365,7 @@ convertToBits(BYTE *x, int xBitLength, int bitsNeeded, int *num_0s, int *num_1s,
 
 
 void
-openOutputStreams(int option)
+openOutputStreams(int option, char *outputFileName)
 {
 	int		i, numOfBitStreams, numOfOpenFiles = 0;
 	char	freqfn[200], summaryfn[200], statsDir[200], resultsDir[200];
@@ -375,7 +375,7 @@ openOutputStreams(int option)
 		printf("\t\tMAIN:  Could not open freq file: <%s>", freqfn);
 		exit(-1);
 	}
-	sprintf(summaryfn, "experiments/%s/finalAnalysisReport.txt", generatorDir[option]);
+	sprintf(summaryfn, "experiments/%s/%s", generatorDir[option], outputFileName);
 	if ( (summary = fopen(summaryfn, "w")) == NULL ) {
 		printf("\t\tMAIN:  Could not open stats file: <%s>", summaryfn);
 		exit(-1);

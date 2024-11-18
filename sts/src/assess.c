@@ -61,15 +61,22 @@ main(int argc, char *argv[])
 	int		i;
 	int		option;			/* TEMPLATE LENGTH/STREAM LENGTH/GENERATOR*/
 	char	*streamFile;	/* STREAM FILENAME     */
+	char	*outputFileName = "finalAnalysisReport.txt"; // Default filename
 	
-
-	if ( argc != 2 ) {
-		printf("Usage: %s <stream length>\n", argv[0]);
+	if ( argc < 2 || argc > 3 ) {
+		printf("Usage: %s <stream length> [output filename]\n", argv[0]);
 		printf("   <stream length> is the length of the individual bit stream(s) to be processed\n");
+		printf("   [output filename] optional output filename (default: finalAnalysisReport.txt)\n");
 		return 0;
 	}
 
 	tp.n = atoi(argv[1]);
+	
+	// Use custom output filename if provided
+	if (argc == 3) {
+		outputFileName = argv[2];
+	}
+
 	tp.blockFrequencyBlockLength = 128;
 	tp.nonOverlappingTemplateBlockLength = 9;
 	tp.overlappingTemplateBlockLength = 9;
@@ -80,7 +87,7 @@ main(int argc, char *argv[])
 	option = generatorOptions(&streamFile);
 	chooseTests();
 	fixParameters();
-	openOutputStreams(option);
+	openOutputStreams(option, outputFileName); // Pass outputFileName parameter
 	invokeTestSuite(option, streamFile);
 	fclose(freqfp);
 	for( i=1; i<=NUMOFTESTS; i++ ) {
